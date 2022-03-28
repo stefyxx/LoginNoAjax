@@ -47,7 +47,7 @@ class LoggazioneAuthenticator extends AbstractLoginFormAuthenticator
     
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        //dove redirigere se l'autentificaz del login non é ok
+        //dove redirigere se scrivo nell'url '/login'
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
@@ -65,6 +65,7 @@ class LoggazioneAuthenticator extends AbstractLoginFormAuthenticator
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
     }
 
+    //dove redirigere se l'autentificaz del login NON é OK
     //riempio la function 'onAuthenticationFailure' se voglio che a ogni login sbagliato mi lanci un'azione(invece di farmi vedere un errore e ancora il formulario)
     /*
     public function onAuthenticationFailure(Request $request,AuthenticationException $exception) 

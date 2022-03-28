@@ -21,7 +21,7 @@ class UtilizzatoreFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         //1) creare gli Utilizzatore
-        for ($i = 0; $i < 5 ; $i++){
+        for ($i = 0; $i < 6 ; $i++){
             $user = new Utilizzatore();
             $user->setNome('nome'.$i);  
             $user->setCognome('cognome'.$i);
@@ -31,10 +31,20 @@ class UtilizzatoreFixtures extends Fixture
         //e poi di $passwordHasher chiamo la function (ossia method) hashPassword
         //hashPassword ha bisogno di 2 parametri: $objRef ($user), stringPSW ('pass'.$i)
             $user->setPassword($this->passwordHasher->hashPassword($user,'pass'.$i));       // es: pass1
+        //se ho bisogno di diversi ruoli: RICORDA CHE é UNA tab
+            $user->setRoles(['ROLE_CLIENTE']);
         //2) ingettare ogni utilizzatore
             $manager->persist ($user);
         }
-        $manager->flush();
+
+        $user = new Utilizzatore();
+            $user->setNome('admin');  
+            $user->setCognome('admin');
+            $user->setEmail ('user'.$i.'@gmail.com');
+            $user->setPassword($this->passwordHasher->hashPassword($user,'admin'));
+            $user->setRoles(['ROLE_ADMIN']);
+            $manager->persist ($user);
+
 
         //3) stoccare gli Utilizzatore in DB
         $manager->flush();

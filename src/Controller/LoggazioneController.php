@@ -28,9 +28,13 @@ class LoggazioneController extends AbstractController
         return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
+    //se vuoi, puoi utilizzare la route verso un altro controller modofocando direttamente
+    //confog -> packages -> security.yaml : linea 27: # target: app_any_route ->target:'home'
+    // 'home' é il  path di Route
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function logout(): Response
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        //throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        return $this->redirectToRoute('/home');
     }
 }

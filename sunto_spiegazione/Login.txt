@@ -1,0 +1,63 @@
+symfony new --webapp nomProject
+
+symfony composer req symfony/security-bundle
+
+symfony console make:user 	...	Utilizzatore
+
+symfony console make:entity Utilizzatore	se devo aggiungere properties
+
+symfony console make:auth
+		LoggazioneAuthenticator  NO LOGINNNNNN
+		LoggazioneController
+
+in  .env  :
+DATABASE_URL="mysql://root:@127.0.0.1:3306/nomeDB"	->nomeDB: FARA' TUTTE MINUSCOLE
+
+symfony console doctrine:database:create
+
+symfony console m:mi
+symfony console d:m:m
+
+symfony composer req --dev doctrine/doctrine-fixtures-bundle
+symfony console make:fixture UtilizzatoreFixtures	-> convenzione nomEntity + FixtureS
+
+	use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+	class UserFixtures extends Fixture
+	{
+    	  private $passwordHasher;
+    	  public function __construct(UserPasswordHasherInterface $passwordHasher)
+    	  {
+         	$this->passwordHasher = $passwordHasher;
+    	  }
+    
+    	  public function load(ObjectManager $manager)
+    	  {
+	    for ($i = 0; $i < 10 ; $i++){
+            	$user = new User();								es:
+            	$user->setEmail ("user".$i."@lala.com");					->login: user2@lala.com
+            	$user->setPassword($this->passwordHasher->hashPassword ($user,'pass'.$i));	->psw: pass2
+            	$manager->persist ($user);
+             }
+             $manager->flush();
+    	   }
+	 }
+
+symfony console d:f:l
+
+in  base.html.twig -> commentare: {#{{ encore_entry_link_tags('app') }}#}  et  {#{{ encore_entry_script_tags('app') }}#}
+
+symfony serve
+
+localhost:8000/login   ->controllare che login é ok ->se é ok, mi da TODO provide a vilid REDIRECT
+
+se ok loggin -> lancia action ‘onAuthenticationSuccess’ di Entity creata con make:auth : 
+	src -> Security -> LoggazioneAuthenticator.php : 
+		commento throw e decommento return
+	return new RedirectResponse($this->urlGenerator->generate('NAME DI ROUTE DI UN ALTRO CONTROLLER'));
+		es:return new RedirectResponse($this->urlGenerator->generate('accueil'));
+
+symfony console make:controller 	....	HomeController  
+
+	HomeController AVRA' un'action con #[Route('/.....', name: 'NAME DI ROUTE DI UN ALTRO CONTROLLER')]
+		es: #[Route('/home', name: 'accueil')]
+
